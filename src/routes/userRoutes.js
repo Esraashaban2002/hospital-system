@@ -30,20 +30,6 @@ router.post('/login' , async(req , res)=>{
     }
 })
 
-router.post('/reset-password' , async(req , res)=>{
-    try{
-        const {email , newPassword} =req.body
-        const user = await User.findOne({email})
-        if (!user) return res.status(404).send('User not found')
-        user.password = newPassword
-        await user.save()
-        res.send({ message: 'Password reset successfully' })
-    }
-    catch(e){
-        res.status(400).send(e.message)
-    }
-})
-
 router.delete('/logout', auth, async (req, res) => {
     try {
      req.user.tokens = req.user.tokens.filter(el => el.token !== req.token);
