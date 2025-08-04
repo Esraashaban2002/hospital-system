@@ -1,130 +1,131 @@
 const express = require("express");
 
-const Doctor = require("../models/Doctor");
+const Nurse = require("../models/Nurse");
 const router = express.Router();
 
-// to create new doctor
-router.post("/doctors/add", async (req, res) => {
-  const newDoctor = new Doctor(req.body);
+
+// to create new nurse
+router.post("/nurses/add", async (req, res) => {
+  const newNurse = new Nurse(req.body);
   try {
-    const saveDoctor = await newDoctor.save();
+    const saveNurse = await newNurse.save();
     res.status(200).json({
-      message: "Doctor info has been added successfully.!",
-      data: saveDoctor,
+      message: "Nurse info has been added successfully.!",
+      data: saveNurse,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// to get All Doctors
-router.get("/doctors/all", async (req, res) => {
+
+// to get All Nurses
+router.get("/nurses/all", async (req, res) => {
   try {
-    const doctors = await Doctor.find();
-    if (!doctors) {
-      return res.status(500).send("sorry, there is no find any doctor");
+    const nurses = await Nurse.find();
+    if (!nurses) {
+      return res.status(500).send("sorry, there is no find any nurse");
     }
     res.json({
-      message: "Get all doctors successfully!",
-      data: doctors,
+      message: "Get all nurses successfully!",
+      data: nurses,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// to get some Doctors
-router.get("/doctor/:id", async (req, res) => {
+// to get some nurses
+router.get("/nurse/:id", async (req, res) => {
   try {
     const _id = req.params.id;
-    const doctor = await Doctor.findById({ _id });
-    if (!doctor) {
-      return res.status(500).send("sorry, this doctor unavailable");
+    const nurse = await Nurse.findById({ _id });
+    if (!nurse) {
+      return res.status(500).send("sorry, this nurse unavailable");
     }
     res.json({
-      message: "Get Some doctor successfully!",
-      data: doctor,
+      message: "Get Some nurse successfully!",
+      data: nurse,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// to update some Doctor
-router.patch("/doctor/update/:id", async (req, res) => {
+
+// to update some Nurse
+router.patch("/nurse/update/:id", async (req, res) => {
   try {
     const _id = req.params.id;
-    const doctor = await Doctor.findByIdAndUpdate(_id, req.body, {
+    const nurse = await Nurse.findByIdAndUpdate(_id, req.body, {
       new: true,
       runValidators: true,
     });
 
-    if (!doctor) {
-      return res.status(404).send("no doctor is finding");
+    if (!nurse) {
+      return res.status(404).send("no nurse is finding");
     }
     res.status(200).json({
-      message: "Doctor updated successfully!",
-      data: doctor,
+      message: "Nurse updated successfully!",
+      data: nurse,
     });
   } catch (err) {
     res.status(500).send(err.message);
   }
 });
 
-// to delete some Doctor
-router.delete("/doctor/delete/:id", async (req, res) => {
+// to delete some Nurse
+router.delete("/nurse/delete/:id", async (req, res) => {
   try {
     const _id = req.params.id;
-    const doctor = await Doctor.findByIdAndDelete(_id);
+    const nurse = await Nurse.findByIdAndDelete(_id);
 
-    if (!doctor) {
-      res.status(404).send("No doctor is founded");
+    if (!nurse) {
+      res.status(404).send("No nurse is founded");
     }
     res.status(200).json({
-      message: "Doctor deleted successfully!",
-      data: doctor,
+      message: "Nurse deleted successfully!",
+      data: nurse,
     });
   } catch (err) {
     res.status(500).send(err.message);
   }
 });
 
-// Route to get count of all Doctors
-router.get("/doctors/count", async (req, res) => {
+// Route to get count of all nurses
+router.get("/nurses/count", async (req, res) => {
   try {
-    const doctorsCount = await Doctor.countDocuments({});
+    const nursesCount = await Nurse.countDocuments({});
 
     res.status(200).json({
-      message: "Total number of doctors retrieved successfully.",
-      count: doctorsCount,
+      message: "Total number of nurses retrieved successfully.",
+      count: nursesCount,
     });
   } catch (error) {
     res.status(500).json({
-      message: "Failed to retrieve doctor count.",
+      message: "Failed to retrieve nurse count.",
       error: error.message,
       stack: error.stack,
     });
   }
 });
 
+
 // filter for all element in doctor table
-router.get("/doctors", async (req, res) => {
+router.get("/nurses", async (req, res) => {
   try {
     const filter = {};
 
     // Build filter dynamically based on query parameters
     if (req.query.fullName) filter.fullName = req.query.fullName;
-    if (req.query.ID) filter.ID = req.query.ID;
     if (req.query.identityNumber) filter.identityNumber = req.query.identityNumber;
     if (req.query.birthDate) filter.birthDate = req.query.birthDate;
     if (req.query.gender) filter.gender = req.query.gender;
     if (req.query.maritalStatus) filter.maritalStatus = req.query.maritalStatus;
     if (req.query.phone) filter.phone = req.query.phone;
     if (req.query.email) filter.email = req.query.email;
-    if (req.query.department) filter.department = req.query.department;
-    if (req.query.academicDegree) filter.academicDegree = req.query.academicDegree;
-    if (req.query.specialization) filter.specialization = req.query.specialization;
 
+    
     // Age-based filtering from birthDate
     if (req.query.minAge || req.query.maxAge) {
       const today = new Date();
@@ -147,22 +148,20 @@ router.get("/doctors", async (req, res) => {
       if (maxDate) filter.birthDate.$gte = maxDate;
     }
 
-    const doctors = await Doctor.find(filter);
+    const nurses = await Nurse.find(filter);
 
-    if (!doctors || doctors.length === 0) {
-      return res.status(404).json({ message: "No doctor found matching the criteria." });
+    if (!nurses || nurses.length === 0) {
+      return res.status(404).json({ message: "No nurse found matching the criteria." });
     }
 
     res.status(200).json({
-      message: "Filtered doctor results:",
-      data: doctors,
+      message: "Filtered nurse results:",
+      data: nurses,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
-
-
 
 
 module.exports = router;

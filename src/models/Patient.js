@@ -1,22 +1,11 @@
 const mongoose = require("mongoose");
 
-const doctorSchema = new mongoose.Schema({
-  image: {
-    type: String,
-    required: [true, "Image URL is required"],
-    trim: true,
-  },
+const patientSchema = mongoose.Schema({
   fullName: {
     type: String,
     required: [true, "FullName is required"],
     unique: [true, "FullName must be unique. This fullName is already taken."],
     minlength: [2, "FullName must be at least 2 characters"],
-  },
-  ID: {
-    type: Number,
-    required: true,
-    unique: [true, "ID must be unique. This ID is already taken."],
-    minlength: [/^\d{5,10}$/, "ID number must be 5 to 10 digits"],
   },
   identityNumber: {
     type: Number,
@@ -26,6 +15,14 @@ const doctorSchema = new mongoose.Schema({
       "Identity Number must be unique. This Identity Number is already taken.",
     ],
     minlength: [/^\d{9,15}$/, "Identity number must be 9 to 15 digits"],
+  },
+  gender: {
+    type: String,
+    required: [true, "Gender is required"],
+    enum: {
+      values: ["male", "female"],
+      message: "{VALUE} is not a valid gender",
+    },
   },
   birthDate: {
     type: Date,
@@ -41,14 +38,6 @@ const doctorSchema = new mongoose.Schema({
       message: "Birth Date must be at least 15 years before today",
     },
   },
-  gender: {
-    type: String,
-    required: [true, "Gender is required"],
-    enum: {
-      values: ["male", "female"],
-      message: "{VALUE} is not a valid gender",
-    },
-  },
   maritalStatus: {
     type: String,
     required: [true, "Marital status is required"],
@@ -57,10 +46,16 @@ const doctorSchema = new mongoose.Schema({
       message: "{VALUE} is not a valid marital status",
     },
   },
+  nationality: {
+    type: String,
+    required: [true, "FullName is required"],
+    minlength: [2, "FullName must be at least 2 characters"],
+  },
   phone: {
     type: String,
     required: [true, "Phone number is required"],
     match: [/^\d{9,15}$/, "Phone number must be 9 to 15 digits"],
+    unique: [true, "Phone must be unique. This email is already taken."],
   },
   email: {
     type: String,
@@ -68,39 +63,10 @@ const doctorSchema = new mongoose.Schema({
     unique: [true, "Email must be unique. This email is already taken."],
     match: [/\S+@\S+\.\S+/, "Email format is invalid"],
   },
-  communicateURL: {
+  address: {
     type: String,
-    required: [true, "URL is required"],
-    trim: true,
-    lowercase: true,
-    validate: {
-      validator: function (value) {
-        const urlPattern =
-          /^(https?:\/\/)([\w\-]+\.)+[\w\-]+(\/[\w\-._~:/?#[\]@!$&'()*+,;=.]+)?$/i;
-        return urlPattern.test(value);
-      },
-      message: (props) => `${props.value} is not a valid URL`,
-    },
-  },
-  specialization: {
-    type: String,
-    required: [true, "Specialization is required"],
+    required: [true, "Address is required"],
     trim: true,
   },
-  department: {
-    type: String,
-    required: [true, "Department is required"],
-    trim: true,
-  },
-  academicDegree: {
-    type: String,
-    required: [true, "Academic degree is required"],
-    trim: true,
-    enum: {
-      values: ["Bachelor", "Master", "PhD", "Diploma", "MD", "Board Certified"],
-      message: "{VALUE} is not a recognized academic degree",
-    },
-  }
 });
-
-module.exports = mongoose.model("Doctors", doctorSchema);
+module.exports = mongoose.model("Patients", patientSchema);
