@@ -10,9 +10,9 @@ const { doctorRoutes, patientRoutes, pharmacyRoutes, nurseRoutes,drugRoutes, use
 // import nurse Modules
 const {  CriticalAlert0Routes, InitialLabResultRoutes, NurseShift,VitalSignRoutes} = require("./routes/NurseModuls");
 // import Doctor Modules
-const {DoctorShift , Appointment , Diagnosis } = require("./routes/DoctorModuls");
+const {DoctorShift , Appointment , Diagnosis , PatientsLabResults} = require("./routes/DoctorModuls");
 // import Patient Modutes 
-const {bookAppointmentRoutes , onlineConsultationRoutes , prescriptionRoutes} = require("./routes/PatientModuls")
+const {bookAppointmentRoutes , onlineConsultationRoutes , prescriptionRoutes , notification, labResult} = require("./routes/PatientModuls")
 
 // Admin Modules
 app.use("/api", doctorRoutes);
@@ -33,10 +33,13 @@ app.use("/api",VitalSignRoutes);
 app.use("/api", DoctorShift);
 app.use("/api", Appointment);
 app.use("/api", Diagnosis);
+app.use("/api", PatientsLabResults);
 
 // //patient Module
 app.use("/api" , bookAppointmentRoutes)
 app.use("/api" , onlineConsultationRoutes)
 app.use("/api" , prescriptionRoutes)
+app.use("/api" , notification)
+app.use("/api" , labResult)
 
 module.exports = app;
