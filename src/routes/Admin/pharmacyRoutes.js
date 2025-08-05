@@ -1,6 +1,6 @@
 const express = require("express");
 
-const Pharmacy = require("../models/Pharmacy");
+const Pharmacy = require("../../models/Admin/Pharmacy");
 const router = express.Router();
 
 

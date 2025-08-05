@@ -1,7 +1,7 @@
 const express = require("express");
 
-const shiftNurse = require("../models/shiftNurse");
-const Nurses = require("../models/Nurse");
+const shiftNurse = require("../../models/Admin/shiftNurse");
+const Nurses = require("../../models/Admin/Nurse");
 const router = express.Router();
 
 // to create new shift nurse

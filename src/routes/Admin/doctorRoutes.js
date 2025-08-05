@@ -1,6 +1,6 @@
 const express = require("express");
 
-const Doctor = require("../models/Doctor");
+const Doctor = require("../../models/Admin/Doctor");
 const router = express.Router();
 
 // to create new doctor

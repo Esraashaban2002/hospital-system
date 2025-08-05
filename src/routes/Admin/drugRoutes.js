@@ -1,6 +1,6 @@
 const express = require("express");
 
-const Drug = require("../models/Drug");
+const Drug = require("../../models/Admin/Drug");
 const router = express.Router();
 
 // to create new drug
