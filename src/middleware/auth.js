@@ -38,7 +38,7 @@ function checkRole(role) {
 }
 module.exports = {
   auth,
-  isUser: checkRole("user"),
+  isPatient: checkRole("patient"),
   isAdmin: checkRole("admin"),
   isDoctor: checkRole("doctor"),
   isNurse: checkRole("nurse"),

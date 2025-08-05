@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
 const CriticalAlert = require("../../models/NurseModuls/CriticalAlert");
-router.get("/nurse/alert", auth(["Nurse"]), async (req, res) => {
+router.get("/nurse/alert", auth.isNurse, async (req, res) => {
   const nurseId = req.user._id;
   try {
     const alert = await CriticalAlert.find({

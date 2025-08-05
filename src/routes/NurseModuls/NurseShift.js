@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require("../../middleware/auth");
 const NurseShift = require("../../models/NurseModuls/NurseShift");
 // Get all nurse shifts
-router.get("/nurse/shifts",auth(["Nurse"]),async (req,res)=>{
+router.get("/nurse/shifts",auth.isNurse,async (req,res)=>{
     const nurseId = req.user._id;
     try{
         const shifts = await NurseShift.find({nurseId}).sort({startTime:1}) ;
