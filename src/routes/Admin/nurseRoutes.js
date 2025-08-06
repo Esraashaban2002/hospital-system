@@ -1,11 +1,13 @@
 const express = require("express");
 
 const Nurse = require("../../models/Admin/Nurse");
+const { auth, isAdmin } = require("../../middleware/auth")
+
 const router = express.Router();
 
 
 // to create new nurse
-router.post("/nurses/add", async (req, res) => {
+router.post("/nurses/add",auth, isAdmin, async (req, res) => {
   const newNurse = new Nurse(req.body);
   try {
     const saveNurse = await newNurse.save();
@@ -20,7 +22,7 @@ router.post("/nurses/add", async (req, res) => {
 
 
 // to get All Nurses
-router.get("/nurses/all", async (req, res) => {
+router.get("/nurses/all",auth, isAdmin, async (req, res) => {
   try {
     const nurses = await Nurse.find();
     if (!nurses) {
@@ -36,7 +38,7 @@ router.get("/nurses/all", async (req, res) => {
 });
 
 // to get some nurses
-router.get("/nurse/:id", async (req, res) => {
+router.get("/nurse/:id",auth, isAdmin, async (req, res) => {
   try {
     const _id = req.params.id;
     const nurse = await Nurse.findById({ _id });
@@ -54,7 +56,7 @@ router.get("/nurse/:id", async (req, res) => {
 
 
 // to update some Nurse
-router.patch("/nurse/update/:id", async (req, res) => {
+router.patch("/nurse/update/:id",auth, isAdmin, async (req, res) => {
   try {
     const _id = req.params.id;
     const nurse = await Nurse.findByIdAndUpdate(_id, req.body, {
@@ -75,7 +77,7 @@ router.patch("/nurse/update/:id", async (req, res) => {
 });
 
 // to delete some Nurse
-router.delete("/nurse/delete/:id", async (req, res) => {
+router.delete("/nurse/delete/:id",auth, isAdmin, async (req, res) => {
   try {
     const _id = req.params.id;
     const nurse = await Nurse.findByIdAndDelete(_id);
@@ -93,7 +95,7 @@ router.delete("/nurse/delete/:id", async (req, res) => {
 });
 
 // Route to get count of all nurses
-router.get("/nurses/count", async (req, res) => {
+router.get("/nurses/count",auth, isAdmin, async (req, res) => {
   try {
     const nursesCount = await Nurse.countDocuments({});
 
@@ -112,7 +114,7 @@ router.get("/nurses/count", async (req, res) => {
 
 
 // filter for all element in doctor table
-router.get("/nurses", async (req, res) => {
+router.get("/nurses",auth, isAdmin, async (req, res) => {
   try {
     const filter = {};
 

@@ -1,12 +1,14 @@
 const express = require("express");
 
 const Patient = require("../../models/Admin/Patient");
+const { auth, isAdmin } = require("../../middleware/auth")
+
 const router = express.Router();
 
 
 
 // to create new Patient
-router.post("/patients/add", async (req, res) => {
+router.post("/patients/add",auth, isAdmin, async (req, res) => {
   const newPatient = new Patient(req.body);
   try {
     const savePatient = await newPatient.save();
@@ -21,7 +23,7 @@ router.post("/patients/add", async (req, res) => {
 
 
 // to get All Patients
-router.get("/patients/all", async (req, res) => {
+router.get("/patients/all",auth, isAdmin, async (req, res) => {
   try {
     const patients = await Patient.find();
     if (!patients) {
@@ -38,7 +40,7 @@ router.get("/patients/all", async (req, res) => {
 
 
 // to update some Patient
-router.patch("/patient/update/:id", async (req, res) => {
+router.patch("/patient/update/:id",auth, isAdmin, async (req, res) => {
   try {
     const _id = req.params.id;
     const patient = await Patient.findByIdAndUpdate(_id, req.body, {
@@ -60,7 +62,7 @@ router.patch("/patient/update/:id", async (req, res) => {
 
 
 // to delete some Patient
-router.delete("/patient/delete/:id", async (req, res) => {
+router.delete("/patient/delete/:id",auth, isAdmin, async (req, res) => {
   try {
     const _id = req.params.id;
     const patient = await Patient.findByIdAndDelete(_id);
@@ -78,7 +80,7 @@ router.delete("/patient/delete/:id", async (req, res) => {
 });
 
 // Route to get count of all Patients
-router.get("/patients/count", async (req, res) => {
+router.get("/patients/count",auth, isAdmin, async (req, res) => {
   try {
     const patientsCount = await Patient.countDocuments({});
 
@@ -97,7 +99,7 @@ router.get("/patients/count", async (req, res) => {
 
 
 // filter for all element in Patient table
-router.get("/patients", async (req, res) => {
+router.get("/patients",auth, isAdmin, async (req, res) => {
   try {
     const filter = {};
 

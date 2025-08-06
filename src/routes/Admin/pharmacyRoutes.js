@@ -1,6 +1,8 @@
 const express = require("express");
 
 const Pharmacy = require("../../models/Admin/Pharmacy");
+const { auth, isAdmin } = require("../../middleware/auth")
+
 const router = express.Router();
 
 
@@ -8,7 +10,7 @@ const router = express.Router();
 
 
 // to create new pharmacy
-router.post("/pharmacies/add", async (req, res) => {
+router.post("/pharmacies/add",auth, isAdmin, async (req, res) => {
   const newPharmacy = new Pharmacy(req.body);
   try {
     const savePharmacy = await newPharmacy.save();
@@ -23,7 +25,7 @@ router.post("/pharmacies/add", async (req, res) => {
 
 
 // to get All Pharmacies
-router.get("/pharmacies/all", async (req, res) => {
+router.get("/pharmacies/all",auth, isAdmin, async (req, res) => {
   try {
     const pharmacies = await Pharmacy.find();
     if (!pharmacies) {
@@ -39,7 +41,7 @@ router.get("/pharmacies/all", async (req, res) => {
 });
 
 // to get some pharmacies
-router.get("/pharmacy/:id", async (req, res) => {
+router.get("/pharmacy/:id",auth, isAdmin, async (req, res) => {
   try {
     const _id = req.params.id;
     const pharmacy = await Pharmacy.findById({ _id });
@@ -56,7 +58,7 @@ router.get("/pharmacy/:id", async (req, res) => {
 });
 
 // to update some pharmacy
-router.patch("/pharmacy/update/:id", async (req, res) => {
+router.patch("/pharmacy/update/:id",auth, isAdmin, async (req, res) => {
   try {
     const _id = req.params.id;
     const pharmacy = await Pharmacy.findByIdAndUpdate(_id, req.body, {
@@ -77,7 +79,7 @@ router.patch("/pharmacy/update/:id", async (req, res) => {
 });
 
 // to delete some pharmacy
-router.delete("/pharmacy/delete/:id", async (req, res) => {
+router.delete("/pharmacy/delete/:id", auth, isAdmin,async (req, res) => {
   try {
     const _id = req.params.id;
     const pharmacy = await Pharmacy.findByIdAndDelete(_id);
@@ -95,7 +97,7 @@ router.delete("/pharmacy/delete/:id", async (req, res) => {
 });
 
 // Route to get count of all pharmacies
-router.get("/pharmacies/count", async (req, res) => {
+router.get("/pharmacies/count",auth, isAdmin, async (req, res) => {
   try {
     const pharmaciesCount = await Pharmacy.countDocuments({});
 
@@ -113,7 +115,7 @@ router.get("/pharmacies/count", async (req, res) => {
 });
 
 // filter for all element in doctor table
-router.get("/pharmacies", async (req, res) => {
+router.get("/pharmacies",auth, isAdmin, async (req, res) => {
   try {
     const filter = {};
 

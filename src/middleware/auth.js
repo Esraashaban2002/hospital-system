@@ -42,4 +42,5 @@ module.exports = {
   isAdmin: checkRole("admin"),
   isDoctor: checkRole("doctor"),
   isNurse: checkRole("nurse"),
+  isPharmacy: checkRole("pharmacy")
 };

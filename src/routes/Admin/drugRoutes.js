@@ -1,10 +1,11 @@
 const express = require("express");
 
 const Drug = require("../../models/Admin/Drug");
+const { auth, isAdmin } = require("../../middleware/auth")
 const router = express.Router();
 
 // to create new drug
-router.post("/drugs/add", async (req, res) => {
+router.post("/drugs/add",auth, isAdmin, async (req, res) => {
   const newDrug = new Drug(req.body);
   try {
     const saveDrug = await newDrug.save();
@@ -18,7 +19,7 @@ router.post("/drugs/add", async (req, res) => {
 });
 
 // to get All Drugs
-router.get("/drugs/all", async (req, res) => {
+router.get("/drugs/all", auth, isAdmin,async (req, res) => {
   try {
     const drugs = await Drug.find();
     if (!drugs) {
@@ -34,7 +35,7 @@ router.get("/drugs/all", async (req, res) => {
 });
 
 // to get some drugs
-router.get("/drug/:id", async (req, res) => {
+router.get("/drug/:id", auth, isAdmin,async (req, res) => {
   try {
     const _id = req.params.id;
     const drug = await Drug.findById({ _id });
@@ -51,7 +52,7 @@ router.get("/drug/:id", async (req, res) => {
 });
 
 // to update some Drug
-router.patch("/drug/update/:id", async (req, res) => {
+router.patch("/drug/update/:id",auth, isAdmin, async (req, res) => {
   try {
     const _id = req.params.id;
     const drug = await Drug.findByIdAndUpdate(_id, req.body, {
@@ -72,7 +73,7 @@ router.patch("/drug/update/:id", async (req, res) => {
 });
 
 // to delete some Drug
-router.delete("/drug/delete/:id", async (req, res) => {
+router.delete("/drug/delete/:id",auth, isAdmin, async (req, res) => {
   try {
     const _id = req.params.id;
     const drug = await Drug.findByIdAndDelete(_id);
@@ -90,7 +91,7 @@ router.delete("/drug/delete/:id", async (req, res) => {
 });
 
 // Route to get count of all drugs
-router.get("/drugs/count", async (req, res) => {
+router.get("/drugs/count",auth, isAdmin, async (req, res) => {
   try {
     const drugsCount = await Drug.countDocuments({});
 
@@ -108,7 +109,7 @@ router.get("/drugs/count", async (req, res) => {
 });
 
 // filter for all element in drug table
-router.get("/drugs", async (req, res) => {
+router.get("/drugs",auth, isAdmin, async (req, res) => {
   try {
     const filter = {};
 

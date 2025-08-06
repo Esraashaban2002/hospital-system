@@ -2,10 +2,12 @@ const express = require("express");
 
 const shiftNurse = require("../../models/Admin/shiftNurse");
 const Nurses = require("../../models/Admin/Nurse");
+const { auth, isAdmin } = require("../../middleware/auth")
+
 const router = express.Router();
 
 // to create new shift nurse
-router.post("/shiftNurse/add", async (req, res) => {
+router.post("/shiftNurse/add",auth, isAdmin, async (req, res) => {
   try {
     const { nurseId, ...shiftData } = req.body;
 
@@ -27,7 +29,7 @@ router.post("/shiftNurse/add", async (req, res) => {
 });
 
 // to get All // to get All shift nurse
-router.get("/shiftNurses/all", async (req, res) => {
+router.get("/shiftNurses/all",auth, isAdmin, async (req, res) => {
   try {
     const shiftNurses = await shiftNurse.find();
     if (!shiftNurses) {
@@ -45,7 +47,7 @@ router.get("/shiftNurses/all", async (req, res) => {
 });
 
 // to get some All shift nurse
-router.get("/shiftNurse/:id", async (req, res) => {
+router.get("/shiftNurse/:id",auth, isAdmin, async (req, res) => {
   try {
     const _id = req.params.id;
     const getShiftNurse = await shiftNurse.findById({ _id });
@@ -62,7 +64,7 @@ router.get("/shiftNurse/:id", async (req, res) => {
 });
 
 // to update some shift nurse
-router.patch("/shiftNurse/update/:id", async (req, res) => {
+router.patch("/shiftNurse/update/:id",auth, isAdmin, async (req, res) => {
   try {
     const shiftId = req.params.id;
     const { nurseId, ...updatedData } = req.body;
@@ -93,7 +95,7 @@ router.patch("/shiftNurse/update/:id", async (req, res) => {
 });
 
 // to delete some shiftNurse
-router.delete("/shiftNurse/delete/:id", async (req, res) => {
+router.delete("/shiftNurse/delete/:id",auth, isAdmin, async (req, res) => {
   try {
     const _id = req.params.id;
     const shiftNurseDelete = await shiftNurse.findByIdAndDelete(_id);
@@ -111,7 +113,7 @@ router.delete("/shiftNurse/delete/:id", async (req, res) => {
 });
 
 // Route to get count of all shiftNurse
-router.get("/shiftNurses/count", async (req, res) => {
+router.get("/shiftNurses/count",auth, isAdmin, async (req, res) => {
   try {
     const shiftNursesCount = await shiftNurse.countDocuments({});
 
@@ -129,7 +131,7 @@ router.get("/shiftNurses/count", async (req, res) => {
 });
 
 // filter for all element in shiftNurses table
-router.get("/shiftNurses", async (req, res) => {
+router.get("/shiftNurses",auth, isAdmin, async (req, res) => {
   try {
     const filter = {};
 
