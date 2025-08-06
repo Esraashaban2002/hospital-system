@@ -3,7 +3,7 @@ const auth = require('../../middleware/auth');
 const Diagnosis  = require('../../models/DoctorModuls/diagnosis');
 const router = express.Router()
 
-router.post('/doctor/diagnosis' , auth.isDoctor, async (req , res) =>{
+router.post('/doctor/diagnosis' , auth.auth ,auth.isDoctor, async (req , res) =>{
   try{
     const { patientId, diagnosis, symptoms , prescription } = req.body;
     const doctorId = req.user._id;
@@ -24,7 +24,7 @@ router.post('/doctor/diagnosis' , auth.isDoctor, async (req , res) =>{
     }
 })
 
-router.get('/doctor/:patientId' , auth.isDoctor, async (req , res) =>{
+router.get('/doctor/:patientId' ,auth.auth , auth.isDoctor, async (req , res) =>{
   try{
     const { patientId} = req.params;
    const diagnoses = await Diagnosis.find({patientId }).populate('doctorId', 'name');

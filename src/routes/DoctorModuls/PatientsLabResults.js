@@ -5,7 +5,7 @@ const AppointmentModel = require('../../models/DoctorModuls/Appointment');
 const InitialLabResultModel = require('../../models/NurseModuls/InitialLabResult');
 const router = express.Router()
 
-router.get('/doctor//my-patients-lab-results' , auth.isDoctor, async (req , res) =>{
+router.get('/doctor//my-patients-lab-results' , auth.auth ,auth.isDoctor, async (req , res) =>{
   try{
     const doctorId = req.user._id;
     const Appointment = AppointmentModel.find({doctorId}).select("patientId")

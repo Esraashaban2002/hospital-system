@@ -5,7 +5,7 @@ const OnlineConsultation = require('../../models/PatientModuls/OnlineConsultatio
 const Doctors = require('../../models/Admin/Doctor')
 
 // online consultation
-router.post("/patient/online_consultation" , auth.isPatient , async (req , res) =>{
+router.post("/patient/online_consultation" , auth.auth ,auth.isPatient , async (req , res) =>{
      try {
     const { doctorId, subject, description } = req.body;
     const patientId = req.user._id;

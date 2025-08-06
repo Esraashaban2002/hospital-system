@@ -5,7 +5,7 @@ const Booking = require('../../models/PatientModuls/bookAppointment ')
 const Doctors = require('../../models/Admin/Doctor')
 
 // booking Appointment
-router.post("/patient/book_appointment" , auth.isPatient, async (req , res) =>{
+router.post("/patient/book_appointment" ,auth.auth , auth.isPatient, async (req , res) =>{
     try {
     const { doctorId, date, time, notes } = req.body;
     const patientId = req.user._id;

@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require("../../middleware/auth");
 const VitalSign = require("../../models/NurseModuls/VitalSign");
 
-router.post("/nurse/vitals/:patientId", auth.isNurse,async(req,res)=>{
+router.post("/nurse/vitals/:patientId",auth.auth , auth.isNurse,async(req,res)=>{
     const nurseId = req.user._id
     const {patientId} = req.params
     const {temperature,bloodPressure,heartRate,respiratoryRate}= req.body

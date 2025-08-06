@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
 const DoctorShift = require("../../models/DoctorModuls/DoctorShift");
-router.get("/doctor/shift", auth.isDoctor, async (req, res) => {
+router.get("/doctor/shift",auth.auth , auth.isDoctor, async (req, res) => {
   try {
     const doctorId = req.user._id;
     const shift = await DoctorShift.find({ doctorId }).sort({ startTime: 1 });

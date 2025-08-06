@@ -4,7 +4,7 @@ const Appointment = require("../../models/DoctorModuls/Appointment");
 const auth = require("../../middleware/auth");
 
 // get all appointments for a doctor
-router.get("/doctor/appointments", auth.isDoctor, async (req, res) => {
+router.get("/doctor/appointments",auth.auth , auth.isDoctor, async (req, res) => {
   const doctorId = req.user._id;
   try {
     const appointments = await Appointment.find({ doctorId })
@@ -24,7 +24,7 @@ router.get("/doctor/appointments", auth.isDoctor, async (req, res) => {
 });
 
 // update appointment status
-router.put("/doctor/appointment/:id/status", auth.isDoctor, async (req, res) => {
+router.put("/doctor/appointment/:id/status", auth.auth ,auth.isDoctor, async (req, res) => {
     const { status } = req.body;
     const id = req.params.id;
     if (!["accepted", "rejected"].includes(status)) {

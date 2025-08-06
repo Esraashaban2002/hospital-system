@@ -3,7 +3,7 @@ const auth = require('../../middleware/auth')
 const InitialLabResultModel = require('../../models/NurseModuls/InitialLabResult')
 const router = express.Router()
 
-router.get('/patient/labResult' , auth.isPatient ,async (req , res) =>{
+router.get('/patient/labResult' ,auth.auth , auth.isPatient ,async (req , res) =>{
     try {
         const result = await InitialLabResultModel.find({ patientId: req.user._id }).sort({ date: -1 })
         res.status(200).send(result)
